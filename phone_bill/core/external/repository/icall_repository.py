@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class ICallRepository(ABC):
-    
+
     @abstractmethod
     def insert_call():
         raise NotImplementedError
