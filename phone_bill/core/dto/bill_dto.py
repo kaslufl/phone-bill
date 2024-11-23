@@ -6,7 +6,7 @@ from phone_bill.core.external.schema import CallORM
 
 date_regex = r"^(0[1-9]|1[0-2])/(19|20)\d{2}$"
 hour_regex = r"^(?:[01]?[0-9]|2[0-3]):([0-5]?[0-9]):([0-5]?[0-9])$"
-duration_regex = r"^(?:[01]?[0-9]|2[0-3])h([0-5]?[0-9])m([0-5]?[0-9])s$"
+duration_regex = r"^(?:\d+)h([0-5]?[0-9])m([0-5]?[0-9])s$"
 monetary_regex = r"^R\$\s(\d{1,3}(\.\d{3})*)(,\d{2})$"
 
 class CallRecordDTO(BaseModel):

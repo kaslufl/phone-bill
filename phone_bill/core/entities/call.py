@@ -23,37 +23,52 @@ class Call:
 
     def calculate_price(self, billing_periods: list[BillingData]):
         current_time = self.start_timestamp
+        remaining_duration = int((self.end_timestamp - self.start_timestamp).total_seconds())
 
-        sorted_periods = self._sort_periods(billing_periods, current_time)
+        sorted_periods = self._sort_periods(billing_periods)
         price = sorted_periods[0].base_price
 
-        for period in sorted_periods:
-            start = datetime.combine(self.start_timestamp.date(), period.start_time)
-            end = datetime.combine(self.start_timestamp.date(), period.end_time)
+        while remaining_duration > 0:
+            for period in sorted_periods:
+                start = datetime.combine(current_time.date(), period.start_time)
+                end = datetime.combine(current_time.date(), period.end_time)
 
-            if end < start:
-                end += timedelta(1)
+                if start > end and start > current_time:
+                    start = start - timedelta(days=1)
+                
+                elif start > end and start <= current_time:
+                    end = end + timedelta(days=1)
 
-            time_in_period = timedelta(0)
-            if start <= current_time <= end:
-                next_transition = min(self.end_timestamp, end)
-                time_in_period = next_transition - current_time
-                current_time = next_transition
+                time_in_period = timedelta(0)
+                if start <= current_time <= end:
+                    next_transition = min(self.end_timestamp, end)
+                    time_in_period = next_transition - current_time
+                    current_time = next_transition
 
-            price += (time_in_period.seconds // 60) * period.minute_fee
+                remaining_duration -= time_in_period.seconds
+                price += (time_in_period.seconds // 60) * period.minute_fee
 
         self.price = price
 
     def _sort_periods(
-        self, billing_periods: list[BillingData], start
+        self, billing_periods: list[BillingData]
     ) -> list[BillingData]:
 
-        def find_period(periods: list[BillingData], start):
-            for i, period in enumerate(periods):
-                if period.start_time <= start.time() < period.end_time:
+        def find_period(periods: list[BillingData]):
+            for i, periods[i] in enumerate(periods):
+                period_start = datetime.combine(self.start_timestamp.date(), periods[i].start_time)
+                period_end = datetime.combine(self.start_timestamp.date(), periods[i].end_time)
+
+                if period_start > period_end and period_start > self.start_timestamp: 
+                    period_start = period_start - timedelta(days=1)
+                
+                elif period_start > period_end and period_start < self.start_timestamp: 
+                    period_end = period_end + timedelta(days=1)
+                    
+                if period_start <= self.start_timestamp <= period_end:
                     return i
 
         billing_periods.sort(key=lambda period: period.start_time)
-        start_index = find_period(billing_periods, start)
+        start_index = find_period(billing_periods)
 
-        return billing_periods[start_index:] + billing_periods[0 : start_index - 1]
+        return billing_periods[start_index:] + billing_periods[:start_index]
