@@ -2,7 +2,7 @@
 name = "phone-bill"
 version = "0.1.0"
 description = "Prova backend CorpSystem"
-authors = ["kaslufl leallucasfonseca@gmail.com"]
+authors = ["kaslufl <leallucasfonseca@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
