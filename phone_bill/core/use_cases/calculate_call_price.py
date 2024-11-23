@@ -21,4 +21,4 @@ class CalculateCallPrice:
         call: Call = Call(**{**asdict(call)})
         call.calculate_price(billing_periods)
 
-        return call_gateway.update_call(db, call)
+        return call_gateway.update_call_price(db, call)

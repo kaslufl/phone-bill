@@ -19,6 +19,9 @@ class CallGateway:
 
     def update_call(self, db: Session, data: Call):
         return self.repository.update_call(db, data)
+    
+    def update_call_price(self, db: Session, data: Call):
+        return self.repository.update_call_price(db, data)
 
     def get_billing(self, db: Session, subscriber: str, period: time):
         return self.repository.get_billing(db, subscriber, period)

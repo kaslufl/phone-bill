@@ -29,6 +29,13 @@ class CallRepository(ICallRepository):
 
         return call
 
+    def update_call_price(db: Session, call: CallORM):
+
+        db.query(CallORM).filter(CallORM.id == call.id).update({CallORM.price : call.price})
+        db.commit()
+
+        return call
+
     def get_billing(db: Session, source: str, period: date):
         billing: list[CallORM] = db.query(CallORM).filter(
             and_(
