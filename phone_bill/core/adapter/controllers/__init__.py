@@ -1,1 +1,2 @@
 from .insert_call_data_controller import InsertCallDataController
+from .generate_report_controller import GenerateReportController

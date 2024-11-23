@@ -40,6 +40,6 @@ class InsertCallDataController:
                 self.db, self.call_gateway, self.billing_gateway, call
             )
 
-        adapter = CallDTO.from_orm(call)
+        adapter = CallDTO.from_entity(call)
 
         return adapter

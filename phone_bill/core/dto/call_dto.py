@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from phone_bill.core.external.schema import CallORM
+from phone_bill.core.entities.call import Call
 
 
 class CallDTO(BaseModel):
@@ -15,5 +15,5 @@ class CallDTO(BaseModel):
     price: Optional[int]
 
     @classmethod
-    def from_orm(cls, data: CallORM):
+    def from_entity(cls, data: Call):
         return cls(**{**data.__dict__})

@@ -1,6 +1,6 @@
-from dataclasses import replace
+from datetime import date
 
-from sqlalchemy import update
+from sqlalchemy import and_, extract
 from sqlalchemy.orm import Session
 
 from phone_bill.core.entities.call import Call
@@ -28,3 +28,15 @@ class CallRepository(ICallRepository):
         db.commit()
 
         return call
+
+    def get_billing(db: Session, source: str, period: date):
+        billing: list[CallORM] = db.query(CallORM).filter(
+            and_(
+                CallORM.source == source,
+                CallORM.start_timestamp != None,
+                CallORM.end_timestamp != None,
+                extract('year', CallORM.end_timestamp) == period.year,
+                extract('month', CallORM.end_timestamp) == period.month,
+            )
+        ).all()
+        return billing

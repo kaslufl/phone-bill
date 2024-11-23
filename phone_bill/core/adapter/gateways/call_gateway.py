@@ -1,3 +1,4 @@
+from datetime import time
 from sqlalchemy.orm import Session
 
 from phone_bill.core.entities.call import Call
@@ -19,5 +20,5 @@ class CallGateway:
     def update_call(self, db: Session, data: Call):
         return self.repository.update_call(db, data)
 
-    def get_bill_by_period():
-        raise NotImplementedError
+    def get_billing(self, db: Session, subscriber: str, period: time):
+        return self.repository.get_billing(db, subscriber, period)

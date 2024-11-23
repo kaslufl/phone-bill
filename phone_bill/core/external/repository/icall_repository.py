@@ -14,3 +14,7 @@ class ICallRepository(ABC):
     @abstractmethod
     def update_call():
         raise NotImplementedError
+
+    @abstractmethod
+    def get_billing():
+        raise NotImplementedError
