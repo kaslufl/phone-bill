@@ -1,0 +1,23 @@
+services:
+  web:
+    build: ./
+    environment:
+      DATABASE_URL: postgresql+psycopg://corp:corp@db:5432/phonebill
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/usr/src/app
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: corp
+      POSTGRES_PASSWORD: corp
+      POSTGRES_DB: phonebill
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
